@@ -1,10 +1,11 @@
 ## This code works with db.connector flask server ###
 
 import requests
+import time
 
 # A function that compares the response from the API server with what we expect to receive in each test:
 def expect_response(response, expected):
-    # try:
+    try:
         if response.json() == expected:
             print('TEST PASSED SUCCESSFULLY - response is as expected')
         else:
@@ -12,9 +13,9 @@ def expect_response(response, expected):
             print(expected)
             print('We got response:')
             print(response.text)
-    # except Exception:
-    #     print('ERROR: response not in JSON:')
-    #     print(response.text)
+    except Exception:
+        print('ERROR: response not in JSON:')
+        print(response.text)
 
 def expect_status(response, expected_status):
     try:
@@ -33,6 +34,7 @@ def space():
     print(' ')
     print('----------------------------------')
     print(' ')
+    time.sleep(1)
 
 def debug(response):
     # print('-- debug: response.text:', response.text)
