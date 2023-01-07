@@ -129,6 +129,7 @@ expect_status(response, 200)
 
 
 space()
+
 print("DELETE METHOD TESTING: NON-EXISTING USER")
 # Send a DELETE request to delete the user
 response = requests.delete(f'{BASE_URL}/users/543')
