@@ -1,7 +1,7 @@
 # PyFlask
 
 Special packages:
-Flask
-selenium
-requests
-PyMySQL
+- Flask
+- selenium
+- requests
+- PyMySQL
