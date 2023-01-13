@@ -1,4 +1,7 @@
 from flask import Flask, request
+import os
+import signal
+
 
 app = Flask(__name__)
 
@@ -15,7 +18,6 @@ def user(user_id):
 
     try:
 
-
         if request.method == 'GET':
             # attempt to retrieve the value stored in the users dictionary under the key user_id.
             try:
@@ -25,8 +27,7 @@ def user(user_id):
             except TypeError:
                 return {'error': 'User ID is missing or invalid'}, 400
             else:
-                return {'user_id': user_id, 'user_name': user_name}, 200  # status code
-
+                return {'user_id': int(user_id), 'user_name': user_name}, 200  # status code
 
 
         elif request.method == 'POST':
@@ -46,11 +47,12 @@ def user(user_id):
                 return {'error': 'Missing user_name in request data'}, 400
             # check if user ID already exists
             if user_id in users:
-                return {'error': 'User ID already exists'}, 400
+                ### return {'error': 'User ID already exists'}, 400  ### previous version
+                return {'reason': 'id already exists', 'status': 'error'}, 400
             # store the user_name value in the users dictionary under the key user_id:
             users[user_id] = user_name
-            return {'user_id': user_id, 'user_name': user_name, 'status': 'saved'}, 200  # status code
-
+            ### return {'user_id': user_id, 'user_name': user_name, 'status': 'saved'}, 200  # status code ### previous version
+            return {'user_added': user_name, 'status': 'ok'}, 200  # status code
 
 
         elif request.method == 'PUT':
@@ -67,8 +69,8 @@ def user(user_id):
             # update the user name in the users dictionary
             users[user_id] = new_user_name
             # return a message to confirm that the user name was updated
+            # return {'user_id': user_id, 'user_name': new_user_name, 'status': 'updated'}, 200  # status code ### previous version
             return {'user_id': user_id, 'user_name': new_user_name, 'status': 'updated'}, 200
-
 
 
         elif request.method == 'DELETE':
@@ -76,7 +78,7 @@ def user(user_id):
                 # delete the user from the users dictionary
                 del users[user_id]
             except KeyError:
-                return {'error': f'User with id {user_id} does not exist'}, 404
+                return {'error': f'User with id {user_id} does not exist or invalid request'}, 404
             except TypeError:
                 return {'error': 'User ID is missing or invalid'}, 400
             # return a message to confirm that the user was deleted
@@ -84,6 +86,16 @@ def user(user_id):
 
     except Exception as e:
         return handle_error(e)
+
+
+@app.route('/stop_server', methods=['GET'])
+def stop_server():
+    try:
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    except Exception as e:
+        print("ERROR: Cannot stop server normally:")
+        handle_error(e)
+    return 'Server stopped'
 
 
 app.run(host='127.0.0.1', debug=True, port=5000)

@@ -1,5 +1,8 @@
 import pymysql
 from flask import Flask, request
+import os
+import signal
+
 
 app = Flask(__name__)
 
@@ -40,13 +43,21 @@ try:
             return f"<h1 id='user'>{result['user_name']}</h1>", 200
 
 
-
 except Exception as e:
     handle_error(e)
 
 
+@app.route('/stop_server', methods=['GET'])
+def stop_server():
+    try:
+        os.kill(os.getpid(), signal.CTRL_C_EVENT)
+    except Exception as e:
+        print("ERROR: Cannot stop server normally:")
+        handle_error(e)
+    return 'Server stopped'
 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True, port=5001)
+
+# if __name__ == '__main__':
+app.run(host='127.0.0.1', debug=True, port=5001)
 
 # connection.close()

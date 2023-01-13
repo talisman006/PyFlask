@@ -61,7 +61,7 @@ expect_status(response, 200)
 time.sleep(2)
 space()
 
-print("GET METHOD TESTING FOR EXISTING USER:")
+print("GET METHOD TESTING - EXISTING USER:")
 # Send a GET request to retrieve an existing user:
 response = requests.get(f'{BASE_URL}/users/3')
 debug(response)
@@ -92,7 +92,7 @@ driver = webdriver.Chrome(service=Service("D:\\Devops Course\Installations\chrom
 driver.implicitly_wait(10) ### conditional synchronization
 
 
-print("Test the get_user_name function with a valid user ID:")
+print("TEST get_user_name FUNCTION WITH A VALID USER ID:")
 
 driver.get("http://127.0.0.1:5001/users/get_user_data/3")
 user_name_element = driver.find_element(By.ID, "user")
@@ -123,7 +123,7 @@ response = requests.delete(f'{BASE_URL}/users/3')
 # expect_response(response, {'user_id': '3', 'status': 'deleted'})
 # Check the status code respectively:
 # expect_status(response, 200)
-print('UTILITY: Test user deleted')
+print('UTILITY: Test user with ID 3 deleted')
 
 
 

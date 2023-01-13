@@ -72,7 +72,7 @@ expect_status(response, 400)
 
 space()
 
-print("GET METHOD TESTING FOR EXISTING USER:")
+print("GET METHOD TESTING - EXISTING USER:")
 # Send a GET request to retrieve an existing user:
 response = requests.get(f'{BASE_URL}/users/1')
 debug(response)
@@ -84,7 +84,7 @@ expect_status(response, 200)
 
 space()
 
-print("GET METHOD TESTING FOR NON-EXISTING USER:")
+print("GET METHOD TESTING - NON-EXISTING USER:")
 # Send a GET request to retrieve an existing user:
 response = requests.get(f'{BASE_URL}/users/5842')
 debug(response)
@@ -120,7 +120,7 @@ expect_status(response, 404)
 
 space()
 
-print("DELETE METHOD TESTING: EXISTING USER")
+print("DELETE METHOD TESTING - EXISTING USER:")
 # Send a DELETE request to delete the user
 response = requests.delete(f'{BASE_URL}/users/1')
 debug(response)
@@ -132,7 +132,7 @@ expect_status(response, 200)
 
 space()
 
-print("DELETE METHOD TESTING: NON-EXISTING USER")
+print("DELETE METHOD TESTING - NON-EXISTING USER:")
 # Send a DELETE request to delete the user
 response = requests.delete(f'{BASE_URL}/users/543')
 debug(response)

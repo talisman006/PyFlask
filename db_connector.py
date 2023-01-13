@@ -1,6 +1,7 @@
 import pymysql
 from flask import Flask, request
 
+
 app = Flask(__name__)
 
 # General error handling func:
@@ -30,7 +31,7 @@ try:
                 sql = "SELECT `user_name`,`user_id` FROM freedb_Lesson5.users WHERE user_id=%s"
                 cursor.execute(sql, (user_id,))
                 result = cursor.fetchone()
-
+                # print('--debug:', result)
             if result is None:
                 return {'error': f'User with id {user_id} does not exist'}, 404 # status code
             else:
