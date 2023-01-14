@@ -1,4 +1,7 @@
 pipeline {
+  environment {
+        env.PATH = env.PATH + ";c:\\Windows\\System32"
+  }
   agent any
   stages {
     stage('Github clone') {
