@@ -1,6 +1,6 @@
 pipeline {
   environment {
-        env.PATH = env.PATH + ";c:\\Windows\\System32"
+        env.PATH = "${env.PATH};C:\\Windows\\System32"
   }
   agent any
   stages {
