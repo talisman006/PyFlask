@@ -1,3 +1,4 @@
+def logPath = 'D:\\PycharmProjects\\PyFlask\\Jenkins_Logs\\'
 pipeline {
   agent any
   stages {
@@ -6,46 +7,40 @@ pipeline {
         git(url: 'https://github.com/talisman006/PyFlask.git', branch: 'main', credentialsId: 'github_new')
       }
     }
-
     stage('Run rest_app.py') {
       steps {
-        shell 'bat "start /min python rest_app.py > rest_app.log"'
+        shell "start /min python rest_app.py > ${logPath}rest_app.log"
       }
     }
-
     stage('Run web_app.py') {
       steps {
-        shell 'bat "start /min python web_app.py > web_app.log"'
+        shell "start /min python web_app.py > ${logPath}web_app.log"
       }
     }
-
     stage('Run backend_testing.py') {
       steps {
-        shell 'bat "python backend_testing.py > backend_testing.log"'
+        shell "python backend_testing.py > ${logPath}backend_testing.log"
       }
     }
-
-    stage('Run frontend _testing.py') {
+    stage('Run frontend_testing.py') {
       steps {
-        shell 'bat "python frontend_testing.py > frontend_testing.log"'
+        shell "python frontend_testing.py > ${logPath}frontend_testing.log"
       }
     }
-
     stage('Run combined_testing.py') {
       steps {
-        shell 'bat "python combined_testing.py > combined_testing.log"'
+        shell "python combined_testing.py > ${logPath}combined_testing.log"
       }
     }
-
-    stage('Run clean_environemnt.py') {
+    stage('Run clean_environment.py') {
       steps {
-        shell 'bat "python clean_environemnt.py > clean_environemnt.log"'
+        shell "python clean_environment.py > ${logPath}clean_environment.log"
       }
     }
   }
   post {
     always {
-      archiveArtifacts artifacts: '*.log'
+      archiveArtifacts artifacts: "${logPath}*.log"
     }
   }
 }
