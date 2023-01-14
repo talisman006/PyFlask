@@ -9,37 +9,49 @@ pipeline {
 
     stage('Run rest_app.py') {
       steps {
-        shell 'bat \'start /min python rest_app.py\''
+        script {
+          shell 'bat "start /min python rest_app.py"'
+        }
       }
     }
 
     stage('Run web_app.py') {
       steps {
-        shell 'bat \'start /min python web_app.py\''
+        script {
+          shell 'bat "start /min python web_app.py"'
+        }
       }
     }
 
     stage('Run backend_testing.py') {
       steps {
-        shell 'bat \'python backend_testing.py\''
+        script {
+          shell 'bat "python backend_testing.py"'
+        }
       }
     }
 
     stage('Run frontend _testing.py') {
       steps {
-        shell 'bat \'python frontend_testing.py\''
+        script {
+          shell 'bat "python frontend_testing.py"'
+        }
       }
     }
 
     stage('Run combined_testing.py') {
       steps {
-        shell 'bat \'python combined_testing.py\''
+        script {
+          shell 'bat "python combined_testing.py"'
+        }
       }
     }
 
     stage('Run clean_environemnt.py') {
       steps {
-        shell 'bat \'python clean_environemnt.py\''
+        script {
+          shell 'bat "python clean_environemnt.py"'
+        }
       }
     }
 
