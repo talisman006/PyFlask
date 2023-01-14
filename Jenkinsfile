@@ -15,31 +15,31 @@ pipeline {
 
     stage('Run web_app.py') {
       steps {
-        sh 'bat \'start /min python web_app.py\''
+        shell 'bat \'start /min python web_app.py\''
       }
     }
 
     stage('Run backend_testing.py') {
       steps {
-        sh 'bat \'python backend_testing.py\''
+        shell 'bat \'python backend_testing.py\''
       }
     }
 
     stage('Run frontend _testing.py') {
       steps {
-        sh 'bat \'python frontend_testing.py\''
+        shell 'bat \'python frontend_testing.py\''
       }
     }
 
     stage('Run combined_testing.py') {
       steps {
-        sh 'bat \'python combined_testing.py\''
+        shell 'bat \'python combined_testing.py\''
       }
     }
 
     stage('Run clean_environemnt.py') {
       steps {
-        sh 'bat \'python clean_environemnt.py\''
+        shell 'bat \'python clean_environemnt.py\''
       }
     }
 
