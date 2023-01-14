@@ -1,6 +1,6 @@
 pipeline {
   environment {
-        env.PATH = "${env.PATH};C:\\\\Windows\\\\System32"
+        "${env.PATH};C:\\Users\\Riki\\AppData\\Local\\Microsoft\\WindowsApps"
   }
   agent any
   stages {
