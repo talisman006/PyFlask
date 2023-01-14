@@ -9,7 +9,7 @@ pipeline {
 
     stage('Run rest_app.py') {
       steps {
-        sh 'bat \'start /min python rest_app.py\''
+        shell 'bat \'start /min python rest_app.py\''
       }
     }
 
