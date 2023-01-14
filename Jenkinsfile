@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Github pull') {
+    stage('Github clone') {
       steps {
-        git(url: 'git@github.com:talisman006/PyFlask.git', branch: 'main', credentialsId: 'github_new')
+        git(url: 'https://github.com/talisman006/PyFlask.git', branch: 'main', credentialsId: 'github_new')
       }
     }
 
