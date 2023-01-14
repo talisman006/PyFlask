@@ -9,51 +9,43 @@ pipeline {
 
     stage('Run rest_app.py') {
       steps {
-        script {
-          shell 'bat "start /min python rest_app.py"'
-        }
+        shell 'bat "start /min python rest_app.py" > rest_app.log'
       }
     }
 
     stage('Run web_app.py') {
       steps {
-        script {
-          shell 'bat "start /min python web_app.py"'
-        }
+        shell 'bat "start /min python web_app.py" > web_app.log'
       }
     }
 
     stage('Run backend_testing.py') {
       steps {
-        script {
-          shell 'bat "python backend_testing.py"'
-        }
+        shell 'bat "python backend_testing.py" > backend_testing.log'
       }
     }
 
     stage('Run frontend _testing.py') {
       steps {
-        script {
-          shell 'bat "python frontend_testing.py"'
-        }
+        shell 'bat "python frontend_testing.py" > frontend_testing.log'
       }
     }
 
     stage('Run combined_testing.py') {
       steps {
-        script {
-          shell 'bat "python combined_testing.py"'
-        }
+        shell 'bat "python combined_testing.py" > combined_testing.log'
       }
     }
 
     stage('Run clean_environemnt.py') {
       steps {
-        script {
-          shell 'bat "python clean_environemnt.py"'
-        }
+        shell 'bat "python clean_environemnt.py" > clean_environemnt.log'
       }
     }
-
+  }
+  post {
+    always {
+      publishArtifacts artifacts: '*.log'
+    }
   }
 }
