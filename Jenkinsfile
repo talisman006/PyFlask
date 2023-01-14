@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Github pull') {
       steps {
-        git(url: 'git@github.com:talisman006/PyFlask.git', branch: 'main')
+        git(url: 'git@github.com:talisman006/PyFlask.git', branch: 'main', credentialsId: 'github')
       }
     }
 
