@@ -38,10 +38,10 @@ def space():
     print(' ')
 
 def debug(response):
-    print('-- debug: response.text:', response.text)
-    print('-- debug: response.json:', response.json)
-    print('-- debug: response.status_code:', response.status_code)
-    # pass
+    # print('-- debug: response.text:', response.text)
+    # print('-- debug: response.json:', response.json)
+    # print('-- debug: response.status_code:', response.status_code)
+    pass
 
 # Set the base URL for the API
 BASE_URL = 'http://127.0.0.1:5000'
@@ -66,7 +66,7 @@ print("GET METHOD TESTING - EXISTING USER:")
 response = requests.get(f'{BASE_URL}/users/3')
 debug(response)
 # Check the response body from the API server and see if it's what we expect it to be or something else:
-expect_response(response, {'user_id': 3, 'user_name': 'Emmett'})
+expect_response(response, {'user_id': '3', 'user_name': 'Emmett'})
 # Check the status code respectively:
 expect_status(response, 200)
 
