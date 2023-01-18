@@ -38,9 +38,5 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      archiveArtifacts artifacts: "${logPath}*.log"
-    }
   }
-}
+

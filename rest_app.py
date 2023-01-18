@@ -1,91 +1,64 @@
 from flask import Flask, request
-import os
-import signal
-
+from db_connector import get_user, create_user, modify_user, delete_user
 
 app = Flask(__name__)
 
-# local users dictionary storage
-users = {}
 
-# General exception handler function
-def handle_error(e):
-    return {'error': str(e)}, 500
-
-# supported methods
+# Supported methods:
 @app.route('/users/<user_id>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def user(user_id):
-
-    try:
-
-        if request.method == 'GET':
-            # attempt to retrieve the value stored in the users dictionary under the key user_id.
-            try:
-                user_name = users[user_id]
-            except KeyError:
-                return {'error': f'User with id {user_id} does not exist'}, 404
-            except TypeError:
-                return {'error': 'User ID is missing or invalid'}, 400
-            else:
-                return {'user_id': int(user_id), 'user_name': user_name}, 200  # status code
+    if request.method == 'GET':
+        result = get_user(user_id)
+        if result is None:
+            return {'error': f'User with id {user_id} does not exist'}, 404  # status code
+        else:
+            return {'user_id': result['user_id'], 'user_name': result['user_name']}, 200  # status code
 
 
-        elif request.method == 'POST':
-            # getting the json data payload from request
-            try:
-                # try to get request data
-                request_data = request.json
-            except Exception:
-                # handle exception if request data is invalid
-                return {'error': 'Invalid request data'}, 400
-            # treating request_data as a dictionary to get a specific value from key
-            try:
-                # try to get user_name from request data
-                user_name = request_data['user_name']
-            except KeyError:
-                # handle exception if user_name is missing from request data
-                return {'error': 'Missing user_name in request data'}, 400
-            # check if user ID already exists
-            if user_id in users:
-                ### return {'error': 'User ID already exists'}, 400  ### previous version
-                return {'reason': 'id already exists', 'status': 'error'}, 400
-            # store the user_name value in the users dictionary under the key user_id:
-            users[user_id] = user_name
-            ### return {'user_id': user_id, 'user_name': user_name, 'status': 'saved'}, 200  # status code ### previous version
+    elif request.method == 'POST':
+        # getting the json data payload from request
+        try:
+            # try to get request data
+            request_data = request.json
+        except Exception:
+            # handle exception if request data is invalid
+            return {'error': 'Invalid request data'}, 400
+        try:
+            # try to get user_name from request data
+            user_name = request_data['user_name']
+        except KeyError:
+            # handle exception if user_name is missing from request data
+            return {'error': 'Missing user_name in request data'}, 400
+        # try to insert the new user into the MySQL database
+        success = create_user(user_id, user_name)
+        if success:
             return {'user_added': user_name, 'status': 'ok'}, 200  # status code
+        else:
+            return {'status': 'error', 'reason': 'id already exists'}, 400
 
 
-        elif request.method == 'PUT':
-            # check if user already exists
-            try:
-                user_name = users[user_id]
-            except KeyError:
-                return {'error': f'User with id {user_id} does not exist'}, 404
-            # get the new user name from the request data
-            try:
-                new_user_name = request.json['user_name']
-            except (KeyError, TypeError):
-                return {'error': 'Missing user_name in request data'}, 400
-            # update the user name in the users dictionary
-            users[user_id] = new_user_name
+    elif request.method == 'PUT':
+
+        # get the new user name from the request data
+        try:
+            new_user_name = request.json['user_name']
+        except (KeyError, TypeError):
+            return {'error': 'Missing user_name in request data'}, 400
+        # update the user name in the MySQL database
+        success = modify_user(user_id, new_user_name)
+        if success:
             # return a message to confirm that the user name was updated
-            # return {'user_id': user_id, 'user_name': new_user_name, 'status': 'updated'}, 200  # status code ### previous version
             return {'user_id': user_id, 'user_name': new_user_name, 'status': 'updated'}, 200
+        else:
+            return {'error': f'User with id {user_id} does not exist'}, 404
 
 
-        elif request.method == 'DELETE':
-            try:
-                # delete the user from the users dictionary
-                del users[user_id]
-            except KeyError:
-                return {'error': f'User with id {user_id} does not exist or invalid request'}, 404
-            except TypeError:
-                return {'error': 'User ID is missing or invalid'}, 400
-            # return a message to confirm that the user was deleted
+    elif request.method == 'DELETE':
+        success = delete_user(user_id)
+        if success:
             return {'user_id': user_id, 'status': 'deleted'}, 200
-
-    except Exception as e:
-        return handle_error(e)
+        else:
+            return {'error': f'User with id {user_id} does not exist or invalid request'}, 404
 
 
 @app.route('/stop_server', methods=['GET'])
@@ -94,8 +67,13 @@ def stop_server():
         os.kill(os.getpid(), signal.CTRL_C_EVENT)
     except Exception as e:
         print("ERROR: Cannot stop server normally:")
-        handle_error(e)
+        print(e)
+        return 'Problem stopping server'
     return 'Server stopped'
 
 
-app.run(host='127.0.0.1', debug=True, port=5000)
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', debug=True, port=5000)
+
+# connection.close()

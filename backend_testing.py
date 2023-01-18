@@ -77,7 +77,7 @@ print("GET METHOD TESTING - EXISTING USER:")
 response = requests.get(f'{BASE_URL}/users/1')
 debug(response)
 # Check the response body from the API server and see if it's what we expect it to be or something else:
-expect_response(response, {'user_id': 1, 'user_name': 'Alice'})
+expect_response(response, {'user_id': '1', 'user_name': 'Alice'})
 # Check the status code respectively:
 expect_status(response, 200)
 
